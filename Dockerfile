@@ -69,16 +69,6 @@ RUN ln -sf \
 	&& echo "NETWORKING=yes" > /etc/sysconfig/network
 
 # -----------------------------------------------------------------------------
-# Configure SSH for non-root public key authentication
-# -----------------------------------------------------------------------------
-RUN sed -i \
-	-e 's~^PasswordAuthentication yes~PasswordAuthentication no~g' \
-	-e 's~^#PermitRootLogin yes~PermitRootLogin no~g' \
-	-e 's~^#UseDNS yes~UseDNS no~g' \
-	-e 's~^\(.*\)/usr/libexec/openssh/sftp-server$~\1internal-sftp~g' \
-	/etc/ssh/sshd_config
-
-# -----------------------------------------------------------------------------
 # Enable the wheel sudoers group
 # -----------------------------------------------------------------------------
 RUN sed -i \
@@ -145,7 +135,7 @@ ENV SSH_AUTHORIZED_KEYS="" \
 	SSH_USER_FORCE_SFTP=false \
 	SSH_USER_HOME="/home/%u" \
 	SSH_USER_ID="500:500" \
-	SSH_USER_PASSWORD="" \
+	SSH_USER_PASSWORD="password" \
 	SSH_USER_PASSWORD_HASHED=false \
 	SSH_USER_SHELL="/bin/bash"
 
