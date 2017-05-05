@@ -4,7 +4,7 @@
 # CentOS-7 7.3.1611 x86_64 - SCL/EPEL/IUS Repos. / Supervisor / OpenSSH.
 # 
 # =============================================================================
-FROM centos:7.3.1611
+FROM azul/zulu-openjdk-centos:8
 
 MAINTAINER James Deathe <james.deathe@gmail.com>
 
@@ -138,38 +138,5 @@ ENV SSH_AUTHORIZED_KEYS="" \
 	SSH_USER_PASSWORD="password" \
 	SSH_USER_PASSWORD_HASHED=false \
 	SSH_USER_SHELL="/bin/bash"
-
-# -----------------------------------------------------------------------------
-# Set image metadata
-# -----------------------------------------------------------------------------
-ARG RELEASE_VERSION="2.2.1"
-LABEL \
-	install="docker run \
---rm \
---privileged \
---volume /:/media/root \
-jdeathe/centos-ssh:${RELEASE_VERSION} \
-/usr/sbin/scmi install \
---chroot=/media/root \
---name=\${NAME} \
---tag=${RELEASE_VERSION} \
---setopt='--volume {{NAME}}.config-ssh:/etc/ssh'" \
-	uninstall="docker run \
---rm \
---privileged \
---volume /:/media/root \
-jdeathe/centos-ssh:${RELEASE_VERSION} \
-/usr/sbin/scmi uninstall \
---chroot=/media/root \
---name=\${NAME} \
---tag=${RELEASE_VERSION} \
---setopt='--volume {{NAME}}.config-ssh:/etc/ssh'" \
-	org.deathe.name="centos-ssh" \
-	org.deathe.version="${RELEASE_VERSION}" \
-	org.deathe.release="jdeathe/centos-ssh:${RELEASE_VERSION}" \
-	org.deathe.license="MIT" \
-	org.deathe.vendor="jdeathe" \
-	org.deathe.url="https://github.com/jdeathe/centos-ssh" \
-	org.deathe.description="CentOS-7 7.3.1611 x86_64 - SCL, EPEL and IUS Repositories / Supervisor / OpenSSH."
 
 CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]
